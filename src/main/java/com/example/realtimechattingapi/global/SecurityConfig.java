@@ -18,7 +18,7 @@ public class SecurityConfig {
     @Bean PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, JwtTokenProvider jwt, UserRepository users,
+    SecurityFilterChain securityFilterChain(HttpSecurity http, AccessTokenValidator validator,
                                             SecurityErrorWriter errors, @Value("${auth.cookie-secure}") boolean secure) throws Exception {
         CookieCsrfTokenRepository csrfRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
         csrfRepository.setCookieCustomizer(cookie -> cookie.path("/").sameSite("Strict").secure(secure));
@@ -27,13 +27,13 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable()).httpBasic(basic -> basic.disable())
                 .logout(logout -> logout.disable()).requestCache(cache -> cache.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/auth/csrf").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/auth/csrf", "/ws", "/chat-test.html", "/chat-test.js").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/signup", "/api/auth/login", "/api/auth/refresh").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((req, res, e) -> errors.write(req, res, 401, "UNAUTHORIZED", "인증이 필요합니다."))
                         .accessDeniedHandler((req, res, e) -> errors.write(req, res, 403, "FORBIDDEN", "접근 권한 또는 CSRF 토큰을 확인해 주세요.")))
-                .addFilterBefore(new JwtAuthenticationFilter(jwt, users, errors), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(validator, errors), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }

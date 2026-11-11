@@ -18,6 +18,7 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokens;
     private final PasswordEncoder passwords;
     private final JwtTokenProvider jwt;
+    private final org.springframework.context.ApplicationEventPublisher events;
 
     @Transactional
     public AuthDtos.UserView signup(AuthDtos.Signup request) {
@@ -38,7 +39,8 @@ public class AuthService {
         User user = users.findLockedByEmail(normalize(request.email())).orElseThrow(ApiException::unauthorized);
         if (request.password().getBytes(StandardCharsets.UTF_8).length > 72
                 || !passwords.matches(request.password(), user.getPasswordHash())) throw ApiException.unauthorized();
-        return issueAndSave(user, refreshTokens.findLockedByUserId(user.getId()).orElse(null));
+        // 사용자 행 잠금 아래 최초 Refresh 조회, 없는 행의 gap lock 회피
+        return issueAndSave(user, refreshTokens.findByUserId(user.getId()).orElse(null));
     }
 
     @Transactional
@@ -60,6 +62,7 @@ public class AuthService {
         }
         refreshTokens.findLockedByUserId(user.getId()).ifPresent(refreshTokens::delete);
         user.invalidateTokens();
+        events.publishEvent(new TokensInvalidated(user.getId(), user.getTokenVersion()));
     }
 
     private AuthDtos.TokenPair issueAndSave(User user, RefreshToken stored) {

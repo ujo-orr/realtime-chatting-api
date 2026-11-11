@@ -6,6 +6,9 @@ build/
 !**/src/test/**/build/
 .env
 /docs
+/planning
+/chapter-notes
+/scripts
 
 ### STS ###
 .apt_generated

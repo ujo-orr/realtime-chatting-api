@@ -12,6 +12,17 @@ import java.time.Instant;
 public class ChatMessageService {
     private final RoomAccessService access;
     private final ChatMessageRepository messages;
+    private final com.example.realtimechattingapi.auth.AccessTokenValidator validator;
+    private final org.springframework.context.ApplicationEventPublisher events;
+
+    @Transactional
+    public void send(com.example.realtimechattingapi.auth.JwtTokenProvider.TokenIdentity identity, Long roomId, String content) {
+        validator.requireCurrent(identity);
+        access.requireMember(roomId, identity.userId());
+        var saved = messages.save(new ChatMessage(roomId, identity.userId(), content));
+        events.publishEvent(new ChatMessageEvents.Saved(new MessageView(saved.getId(), saved.getRoomId(),
+                saved.getSenderId(), saved.getContent(), saved.getCreatedAt())));
+    }
 
     @Transactional(readOnly = true)
     public CursorPage<MessageView> history(Long userId, Long roomId, Long beforeId, int limit) {

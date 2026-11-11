@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 2 · 채팅 검증</title>
+  <style>
+    body{font:16px/1.6 system-ui,sans-serif;max-width:850px;margin:36px auto;padding:0 20px;color:#172a35;background:#f5f7f9}
+    h1{font-size:26px}section{background:white;padding:20px;border:1px solid #dce4e9;border-radius:10px;margin:16px 0}
+    label{display:block;margin-top:10px}input{padding:9px;border:1px solid #bac9d3;border-radius:5px;max-width:90%;width:320px}
+    button{padding:9px 13px;margin:10px 5px 0 0;cursor:pointer;border:1px solid #bac9d3;border-radius:5px;background:#edf3f7}
+    #status{font-weight:600}#messages{min-height:80px}#log{white-space:pre-wrap;background:#172a35;color:#e4edf3;padding:16px;border-radius:7px;font-size:13px;max-height:250px;overflow:auto}
+    .note{color:#506572;font-size:14px}li{overflow-wrap:anywhere}
+  </style>
+</head>
+<body>
+<h1>두 사용자 채팅 검증</h1>
+<p id="status" role="status">연결 안 됨</p>
+<section>
+  <h2>1. 사용자 인증</h2>
+  <label>이메일 <input id="email" type="email" autocomplete="username"></label>
+  <label>비밀번호 <input id="password" type="password" autocomplete="current-password" minlength="8"></label>
+  <label>닉네임 <input id="nickname" value="tester" maxlength="50"></label>
+  <button id="signup">가입</button><button id="login">로그인</button><button id="refresh">재발급 후 재연결</button><button id="logout">로그아웃</button>
+  <p id="user" class="note">로그인 후 내 방을 조회할 수 있습니다.</p>
+</section>
+<section>
+  <h2>2. 방 준비</h2>
+  <label>방 이름 <input id="roomName" value="Chapter 2 검증방" maxlength="100"></label>
+  <label>참여자 ID (쉼표 구분, 혼자면 공란) <input id="participants"></label>
+  <button id="createRoom">방 생성</button><button id="listRooms">내 방 조회</button>
+  <ul id="rooms"></ul>
+  <label>사용할 방 ID <input id="roomId" type="number" min="1"></label>
+</section>
+<section>
+  <h2>3. 연결·구독·전송</h2>
+  <button id="connect">연결</button><button id="subscribe">방 구독</button><button id="disconnect">정상 종료</button><button id="history">이력 조회</button>
+  <label>메시지 <input id="content" maxlength="2000"></label><button id="send">보내기</button>
+  <ul id="messages"></ul>
+  </section>
+<h2>관찰 로그</h2><pre id="log" aria-live="polite"></pre>
+<script src="/chat-test.js" defer></script>
+</body>
+</html>

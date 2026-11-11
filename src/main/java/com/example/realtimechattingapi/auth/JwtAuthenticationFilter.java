@@ -13,8 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtTokenProvider jwt;
-    private final UserRepository users;
+    private final AccessTokenValidator validator;
     private final SecurityErrorWriter errors;
 
     @Override
@@ -23,10 +22,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String header = request.getHeader("Authorization");
         if (header != null) {
             try {
-                if (!header.startsWith("Bearer ")) throw ApiException.unauthorized();
-                var identity = jwt.verify(header.substring(7), "access");
-                var user = users.findById(identity.userId()).orElseThrow(ApiException::unauthorized);
-                if (user.getTokenVersion() != identity.version()) throw ApiException.unauthorized();
+                var identity = validator.authenticate(header);
                 var context = SecurityContextHolder.createEmptyContext();
                 context.setAuthentication(new UsernamePasswordAuthenticationToken(identity, null, List.of()));
                 SecurityContextHolder.setContext(context);

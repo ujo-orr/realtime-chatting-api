@@ -23,3 +23,7 @@ jwt:
   refresh-ttl: 7d
 auth:
   cookie-secure: ${COOKIE_SECURE:true}
+chat:
+  websocket:
+    connect-timeout: 5s
+    heartbeat-ms: 10000
