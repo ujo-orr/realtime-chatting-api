@@ -49,3 +49,11 @@ tasks.named('test') {
     useJUnitPlatform()
     testLogging { events 'passed', 'skipped', 'failed' }
 }
+
+tasks.register('clientTest', Exec) {
+    commandLine 'node', '--test', 'src/test/js/recovery-client.test.mjs'
+}
+
+tasks.named('check') {
+    dependsOn 'clientTest'
+}

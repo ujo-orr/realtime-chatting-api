@@ -16,6 +16,7 @@ public class ChatRoomService {
     private final ChatRoomRepository rooms;
     private final ChatRoomMemberRepository members;
     private final UserRepository users;
+    private final com.example.realtimechattingapi.notification.NotificationService notifications;
 
     @Transactional
     public RoomView create(Long creatorId, CreateRoom request) {
@@ -26,6 +27,7 @@ public class ChatRoomService {
         }
         ChatRoom room = rooms.save(new ChatRoom(request.name().strip(), creatorId));
         members.saveAll(ids.stream().map(id -> new ChatRoomMember(room.getId(), id)).toList());
+        notifications.roomCreated(room.getId(), creatorId, ids);
         return RoomView.of(room);
     }
 

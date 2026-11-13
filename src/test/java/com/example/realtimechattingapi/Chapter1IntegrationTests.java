@@ -61,7 +61,7 @@ class Chapter1IntegrationTests {
     @BeforeEach
     void cleanDatabase() {
         // This is the disposable Testcontainers database, never the Compose development database.
-        for (String table : List.of("chat_messages", "chat_room_members", "chat_rooms", "refresh_tokens", "users")) {
+        for (String table : List.of("notifications", "chat_messages", "chat_room_members", "chat_rooms", "refresh_tokens", "users")) {
             jdbc.update("DELETE FROM " + table);
         }
     }

@@ -27,7 +27,9 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable()).httpBasic(basic -> basic.disable())
                 .logout(logout -> logout.disable()).requestCache(cache -> cache.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/auth/csrf", "/ws", "/chat-test.html", "/chat-test.js").permitAll()
+                        .requestMatchers(request -> request.getDispatcherType() == jakarta.servlet.DispatcherType.ASYNC
+                                && request.getRequestURI().equals("/api/notifications/stream")).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/auth/csrf", "/ws", "/chat-test.html", "/chat-test.js", "/recovery-client.mjs").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/signup", "/api/auth/login", "/api/auth/refresh").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex

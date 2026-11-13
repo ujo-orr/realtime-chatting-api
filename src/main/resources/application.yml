@@ -27,3 +27,6 @@ chat:
   websocket:
     connect-timeout: 5s
     heartbeat-ms: 10000
+  sse:
+    timeout: 30m
+    heartbeat: 15s

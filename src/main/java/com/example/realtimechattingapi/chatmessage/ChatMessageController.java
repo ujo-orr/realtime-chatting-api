@@ -15,7 +15,8 @@ public class ChatMessageController {
     public CursorPage<ChatMessageService.MessageView> history(@AuthenticationPrincipal TokenIdentity identity,
                                                             @PathVariable @Positive Long roomId,
                                                             @RequestParam(required = false) @Positive Long beforeId,
+                                                            @RequestParam(required = false) @Min(0) Long afterId,
                                                             @RequestParam(defaultValue = "20") @Min(1) @Max(100) int limit) {
-        return service.history(identity.userId(), roomId, beforeId, limit);
+        return service.history(identity.userId(), roomId, beforeId, afterId, limit);
     }
 }

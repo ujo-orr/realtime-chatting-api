@@ -54,6 +54,11 @@ public class ApiExceptionHandler {
         return response(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_ERROR", "서버에서 요청을 처리하지 못했습니다.", request);
     }
 
+    @ExceptionHandler(org.springframework.web.context.request.async.AsyncRequestNotUsableException.class)
+    void disconnectedStream() {
+        log.debug("Asynchronous HTTP response is no longer writable");
+    }
+
     private ResponseEntity<ApiError> response(HttpStatus status, String code, String message, HttpServletRequest request) {
         return ResponseEntity.status(status).body(ApiError.of(code, message, request.getRequestURI()));
     }

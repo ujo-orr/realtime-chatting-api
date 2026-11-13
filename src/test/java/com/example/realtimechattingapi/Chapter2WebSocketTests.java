@@ -68,7 +68,7 @@ class Chapter2WebSocketTests {
 
     @BeforeEach void setup() throws Exception {
         http = HttpClient.newHttpClient();
-        for (String table : List.of("chat_messages", "chat_room_members", "chat_rooms", "refresh_tokens", "users")) jdbc.update("DELETE FROM " + table);
+        for (String table : List.of("notifications", "chat_messages", "chat_room_members", "chat_rooms", "refresh_tokens", "users")) jdbc.update("DELETE FROM " + table);
         alice = users.save(new User("alice@example.com", "unused-in-socket-tests", "alice"));
         bob = users.save(new User("bob@example.com", "unused-in-socket-tests", "bob"));
         outsider = users.save(new User("outsider@example.com", "unused-in-socket-tests", "outsider"));

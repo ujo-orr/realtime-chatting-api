@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chapter 2 · 채팅 검증</title>
+  <title>Chapter 3 · 알림과 복구 검증</title>
   <style>
     body{font:16px/1.6 system-ui,sans-serif;max-width:850px;margin:36px auto;padding:0 20px;color:#172a35;background:#f5f7f9}
     h1{font-size:26px}section{background:white;padding:20px;border:1px solid #dce4e9;border-radius:10px;margin:16px 0}
@@ -13,7 +13,7 @@
   </style>
 </head>
 <body>
-<h1>두 사용자 채팅 검증</h1>
+<h1>채팅·초대 알림·재연결 검증</h1>
 <p id="status" role="status">연결 안 됨</p>
 <section>
   <h2>1. 사용자 인증</h2>
@@ -25,7 +25,7 @@
 </section>
 <section>
   <h2>2. 방 준비</h2>
-  <label>방 이름 <input id="roomName" value="Chapter 2 검증방" maxlength="100"></label>
+  <label>방 이름 <input id="roomName" value="복구 검증방" maxlength="100"></label>
   <label>참여자 ID (쉼표 구분, 혼자면 공란) <input id="participants"></label>
   <button id="createRoom">방 생성</button><button id="listRooms">내 방 조회</button>
   <ul id="rooms"></ul>
@@ -33,11 +33,17 @@
 </section>
 <section>
   <h2>3. 연결·구독·전송</h2>
-  <button id="connect">연결</button><button id="subscribe">방 구독</button><button id="disconnect">정상 종료</button><button id="history">이력 조회</button>
+  <button id="connect">연결·재연결</button><button id="subscribe">방 구독</button><button id="disconnect">정상 종료</button><button id="history">누락 이력 조회</button>
   <label>메시지 <input id="content" maxlength="2000"></label><button id="send">보내기</button>
   <ul id="messages"></ul>
   </section>
+<section>
+  <h2>4. 초대 알림</h2>
+  <p id="sseStatus" role="status">SSE 연결 전</p>
+  <button id="sseConnect">알림 연결·재연결</button><button id="sseDisconnect">알림 중단</button><button id="notificationHistory">알림 이력 조회</button>
+  <ul id="notifications"></ul>
+</section>
 <h2>관찰 로그</h2><pre id="log" aria-live="polite"></pre>
-<script src="/chat-test.js" defer></script>
+<script type="module" src="/chat-test.js"></script>
 </body>
 </html>

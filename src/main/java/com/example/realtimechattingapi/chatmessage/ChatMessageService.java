@@ -26,8 +26,18 @@ public class ChatMessageService {
 
     @Transactional(readOnly = true)
     public CursorPage<MessageView> history(Long userId, Long roomId, Long beforeId, int limit) {
+        return history(userId, roomId, beforeId, null, limit);
+    }
+
+    @Transactional(readOnly = true)
+    public CursorPage<MessageView> history(Long userId, Long roomId, Long beforeId, Long afterId, int limit) {
+        if (beforeId != null && afterId != null) {
+            throw new com.example.realtimechattingapi.global.ApiException(org.springframework.http.HttpStatus.BAD_REQUEST,
+                    "INVALID_REQUEST", "beforeId와 afterId는 함께 사용할 수 없습니다.");
+        }
         access.requireMember(roomId, userId);
-        var found = messages.findHistory(roomId, beforeId, PageRequest.of(0, limit + 1));
+        var found = afterId == null ? messages.findHistory(roomId, beforeId, PageRequest.of(0, limit + 1))
+                : messages.findAfter(roomId, afterId, PageRequest.of(0, limit + 1));
         boolean more = found.size() > limit;
         var items = found.stream().limit(limit)
                 .map(m -> new MessageView(m.getId(), m.getRoomId(), m.getSenderId(), m.getContent(), m.getCreatedAt())).toList();
