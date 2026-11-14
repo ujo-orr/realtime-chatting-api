@@ -1,0 +1,5 @@
+# 외부 포트를 공개하지 않은 앱과 신뢰하는 Nginx 사이에서만 사용하는 프로필
+server:
+  forward-headers-strategy: framework
+auth:
+  cookie-secure: true

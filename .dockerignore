@@ -1,0 +1,4 @@
+**
+!build/
+!build/libs/
+!build/libs/realtime-chatting-api-0.0.1-SNAPSHOT.jar

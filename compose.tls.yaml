@@ -1,0 +1,39 @@
+services:
+  app:
+    build: .
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/chatting?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true
+      DB_USERNAME: chatting
+      DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
+      SPRING_PROFILES_ACTIVE: proxy
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+  observe:
+    profiles: [tools]
+    build: ./ops/observe
+    network_mode: service:nginx
+    cap_drop: [ALL]
+    cap_add: [NET_RAW]
+    volumes:
+      - ./.local/capture:/capture
+    depends_on:
+      - nginx
+  nginx:
+    image: nginx:1.30.6
+    ports:
+      - "127.0.0.1:${HTTP_PORT:-8081}:80"
+      - "127.0.0.1:${TLS_PORT:-8443}:443"
+    environment:
+      TLS_PORT: ${TLS_PORT:-8443}
+      SSE_PROXY_READ_TIMEOUT: ${SSE_PROXY_READ_TIMEOUT:-60s}
+      NGINX_ENVSUBST_FILTER: "^(TLS_PORT|SSE_PROXY_READ_TIMEOUT)$$"
+    volumes:
+      - ./ops/nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./.local/tls/server.crt:/etc/nginx/tls/server.crt:ro
+      - ./.local/tls/server.key:/etc/nginx/tls/server.key:ro
+    depends_on:
+      - app
+    restart: unless-stopped

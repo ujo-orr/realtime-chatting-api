@@ -47,6 +47,23 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    exclude '**/Chapter4ProxyTests.class'
+    testLogging { events 'passed', 'skipped', 'failed' }
+}
+
+tasks.register('proxyTest', Test) {
+    description = '실행 중인 로컬 HTTPS Nginx·앱·MySQL 검증'
+    group = 'verification'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    include '**/Chapter4ProxyTests.class'
+    useJUnitPlatform()
+    outputs.upToDateWhen { false }
+    doFirst {
+        ['CHAPTER4_BASE_URL', 'CHAPTER4_HTTP_URL', 'CHAPTER4_CA_CERT'].each { key ->
+            if (!System.getenv(key)) throw new GradleException("proxyTest 필수 환경변수 누락: ${key}")
+        }
+    }
     testLogging { events 'passed', 'skipped', 'failed' }
 }
 
