@@ -9,14 +9,19 @@ import java.time.Instant;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChatRoom {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, length = 100)
     private String name;
+
     @Column(nullable = false)
     private Long createdBy;
+
     @Column(nullable = false)
     private Instant createdAt;
+
     public ChatRoom(String name, Long createdBy) {
         this.name = name;
         this.createdBy = createdBy;

@@ -9,12 +9,22 @@ import java.time.Instant;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChatMessage {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false) private Long roomId;
-    @Column(nullable = false) private Long senderId;
-    @Column(nullable = false, length = 2000) private String content;
-    @Column(nullable = false) private Instant createdAt;
+
+    @Column(nullable = false)
+    private Long roomId;
+
+    @Column(nullable = false)
+    private Long senderId;
+
+    @Column(nullable = false, length = 2000)
+    private String content;
+
+    @Column(nullable = false)
+    private Instant createdAt;
+
     public ChatMessage(Long roomId, Long senderId, String content) {
         this.roomId = roomId;
         this.senderId = senderId;

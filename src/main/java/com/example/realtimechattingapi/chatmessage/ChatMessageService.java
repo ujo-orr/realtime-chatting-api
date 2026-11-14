@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 
-@Service @RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class ChatMessageService {
     private final RoomAccessService access;
     private final ChatMessageRepository messages;

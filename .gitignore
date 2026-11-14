@@ -6,7 +6,8 @@ build/
 !**/src/test/**/build/
 .env
 .local/
-/docs
+/docs/*
+!/docs/RETROSPECTIVE_DRAFT.md
 /planning
 /chapter-notes
 /scripts

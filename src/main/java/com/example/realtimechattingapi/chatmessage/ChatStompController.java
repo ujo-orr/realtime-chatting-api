@@ -11,7 +11,8 @@ import org.springframework.security.core.Authentication;
 import java.security.Principal;
 import tools.jackson.databind.ObjectMapper;
 
-@Controller @RequiredArgsConstructor
+@Controller
+@RequiredArgsConstructor
 public class ChatStompController {
     private final ChatMessageService messages;
     private final ConnectionRegistry connections;
@@ -39,5 +40,8 @@ public class ChatStompController {
         connections.close(headers.getSessionId(), "INVALID_MESSAGE");
     }
 
-    public record SendMessage(@NotBlank @Size(max = 2000) String content) {}
+    public record SendMessage(
+            @NotBlank
+            @Size(max = 2000)
+            String content) {}
 }

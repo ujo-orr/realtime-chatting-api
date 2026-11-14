@@ -11,7 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.*;
 
-@Service @RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class ChatRoomService {
     private final ChatRoomRepository rooms;
     private final ChatRoomMemberRepository members;
@@ -39,8 +40,10 @@ public class ChatRoomService {
         return new CursorPage<>(items, more ? items.getLast().id() : null, more);
     }
 
-    public record CreateRoom(@NotBlank @Size(max = 100) String name,
-                             @NotNull @Size(max = 100) List<@NotNull @Positive Long> participantIds) {}
+    public record CreateRoom(
+            @NotBlank @Size(max = 100) String name,
+            @NotNull @Size(max = 100) List<@NotNull @Positive Long> participantIds) {}
+
     public record RoomView(Long id, String name, Long createdBy, Instant createdAt) {
         static RoomView of(ChatRoom room) { return new RoomView(room.getId(), room.getName(), room.getCreatedBy(), room.getCreatedAt()); }
     }

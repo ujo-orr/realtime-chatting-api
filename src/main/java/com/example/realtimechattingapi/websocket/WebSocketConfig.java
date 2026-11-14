@@ -12,7 +12,8 @@ import org.springframework.web.socket.config.annotation.*;
 import org.springframework.web.socket.messaging.StompSubProtocolErrorHandler;
 import java.nio.charset.StandardCharsets;
 
-@Configuration @EnableWebSocketMessageBroker
+@Configuration
+@EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private final ConnectionRegistry connections;
     private final RoomAccessService rooms;

@@ -12,7 +12,8 @@ import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
 
-@Component @Slf4j
+@Component
+@Slf4j
 public class NotificationStreamRegistry {
     private final Map<Long, Map<String, Connection>> users = new ConcurrentHashMap<>();
     private final AccessTokenValidator validator;

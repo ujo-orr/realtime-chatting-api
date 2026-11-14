@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
-@Component @RequiredArgsConstructor
+@Component
+@RequiredArgsConstructor
 public class SecurityErrorWriter {
     private final ObjectMapper mapper;
     public void write(HttpServletRequest request, HttpServletResponse response, int status, String code, String message) throws IOException {

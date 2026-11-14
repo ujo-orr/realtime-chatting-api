@@ -5,7 +5,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.*;
 
-@Component @RequiredArgsConstructor
+@Component
+@RequiredArgsConstructor
 public class ChatMessageEvents {
     private final SimpMessagingTemplate messaging;
     public record Saved(ChatMessageService.MessageView message) {}

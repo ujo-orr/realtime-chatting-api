@@ -13,7 +13,8 @@ import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
 
-@Component @Slf4j
+@Component
+@Slf4j
 public class ConnectionRegistry {
     private final Map<String, Connection> connections = new ConcurrentHashMap<>();
     private final Map<Long, Set<String>> users = new ConcurrentHashMap<>();

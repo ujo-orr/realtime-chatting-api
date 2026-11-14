@@ -10,15 +10,18 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-@RestController @RequestMapping("/api/notifications") @RequiredArgsConstructor
+@RestController
+@RequestMapping("/api/notifications")
+@RequiredArgsConstructor
 public class NotificationController {
     private final NotificationService notifications;
     private final NotificationStreamRegistry streams;
 
     @GetMapping
-    public CursorPage<NotificationService.View> history(@AuthenticationPrincipal TokenIdentity identity,
-                                                        @RequestParam(defaultValue = "0") @Min(0) long afterId,
-                                                        @RequestParam(defaultValue = "20") @Min(1) @Max(100) int limit) {
+    public CursorPage<NotificationService.View> history(
+            @AuthenticationPrincipal TokenIdentity identity,
+            @RequestParam(defaultValue = "0") @Min(0) long afterId,
+            @RequestParam(defaultValue = "20") @Min(1) @Max(100) int limit) {
         return notifications.history(identity.userId(), afterId, limit);
     }
 

@@ -9,7 +9,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-@Configuration @RequiredArgsConstructor
+@Configuration
+@RequiredArgsConstructor
 @Order(Ordered.HIGHEST_PRECEDENCE + 99)
 public class StompAuthenticationConfig implements WebSocketMessageBrokerConfigurer {
     private final AccessTokenValidator validator;

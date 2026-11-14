@@ -9,7 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.Collection;
 
-@Service @RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class NotificationService {
     private final NotificationRepository notifications;
     private final ApplicationEventPublisher events;
